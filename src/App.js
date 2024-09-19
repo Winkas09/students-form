@@ -1,12 +1,13 @@
-import "./App.css";
+import React from "react";
 import StudentPage from "./StudentPage";
+import "./App.css";
 
-function App() {
+const App = () => {
   return (
-    <div className="student-form">
+    <div className="App">
       <StudentPage />
     </div>
   );
-}
+};
 
 export default App;
