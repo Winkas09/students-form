@@ -38,7 +38,8 @@ const StudentForm = ({ addStudent }) => {
     if (!formData.surname) newErrors.surname = "Surname is required";
     if (!formData.age || formData.age < 1 || formData.age > 99)
       newErrors.age = "Valid age is required";
-    if (!formData.phoneNumber) newErrors.phoneNumber = "Phone number is required";
+    if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber))
+      newErrors.phoneNumber = "Valid phone number is required (10 digits)";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.groupNumber) newErrors.groupNumber = "Group number is required";
     if (formData.programmingLanguages.length === 0)
@@ -110,6 +111,8 @@ const StudentForm = ({ addStudent }) => {
           onChange={handleChange}
           required
           placeholder="Enter your phone number"
+          pattern="\d{10}"
+          maxLength="10"
         />
         {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
 
