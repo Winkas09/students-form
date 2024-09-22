@@ -70,7 +70,6 @@ button:hover {
   margin-top: 10px;
 }
 
-/* Student List Styles */
 #students-list {
   margin-top: 20px;
 }
@@ -105,21 +104,11 @@ button:hover {
   background-color: #c82333;
 }
 
-/* Make checkboxes display in a column */
 #programming-languages {
   display: flex;
   flex-direction: column;
 }
 
-/* Error Styles */
-.error {
-  color: red;
-  font-size: 0.875em;
-  margin-top: -10px;
-  margin-bottom: 10px;
-}
-
-/* IT Knowledge Level Display */
 input[type="range"] + span {
   margin-left: 10px;
   font-weight: bold;
