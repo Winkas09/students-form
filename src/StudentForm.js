@@ -50,7 +50,6 @@ const StudentForm = ({ addStudent }) => {
     )
       newErrors.phoneNumber = "Valid phone number is required (9-12 digits)";
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.groupNumber) newErrors.groupNumber = "Group number is required";
     if (formData.programmingLanguages.length === 0)
       newErrors.programmingLanguages = "At least one programming language is required";
     return newErrors;
@@ -106,7 +105,6 @@ const StudentForm = ({ addStudent }) => {
         />
         <span>{formData.knowledgeLevel}</span>
       </label>
-      {errors.groupNumber && <span className="error-message">{errors.groupNumber}</span>}
       <label>
         Group Number:
         <label>
