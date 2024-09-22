@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./App.css";
 
 const StudentForm = ({ addStudent }) => {
   const initialFormData = {
@@ -34,10 +35,14 @@ const StudentForm = ({ addStudent }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    } else if (formData.name.length < 3) {
+      newErrors.name = "Name must be at least 3 characters long";
+    }
     if (!formData.surname) newErrors.surname = "Surname is required";
     if (!formData.age || formData.age < 1 || formData.age > 99)
-      newErrors.age = "Valid age is required";
+      newErrors.age = "Valid age is required from 1-99";
     if (
       !formData.phoneNumber ||
       formData.phoneNumber.length < 9 ||
@@ -54,100 +59,56 @@ const StudentForm = ({ addStudent }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      addStudent({ ...formData, id: generateUniqueId() });
+    if (Object.keys(validationErrors).length === 0) {
+      addStudent(formData);
       setFormData(initialFormData);
-      setErrors({});
+    } else {
+      setErrors(validationErrors);
     }
   };
 
-  const generateUniqueId = () => "_" + Math.random().toString(36).substr(2, 9);
-
   return (
     <form onSubmit={handleSubmit}>
-      <fieldset>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          placeholder="Enter your name"
-        />
-        {errors.name && <p className="error">{errors.name}</p>}
-
-        <label htmlFor="surname">Surname:</label>
-        <input
-          type="text"
-          id="surname"
-          name="surname"
-          value={formData.surname}
-          onChange={handleChange}
-          required
-          placeholder="Enter your surname"
-        />
-        {errors.surname && <p className="error">{errors.surname}</p>}
-
-        <label htmlFor="age">Age:</label>
-        <input
-          type="number"
-          id="age"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          required
-          placeholder="Enter age"
-          min="1"
-          max="99"
-        />
-        {errors.age && <p className="error">{errors.age}</p>}
-
-        <label htmlFor="phoneNumber">Phone Number:</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          required
-          placeholder="Enter your phone number"
-          maxLength="12"
-          minLength="9"
-        />
-        {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
-
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          placeholder="Enter your email"
-        />
-        {errors.email && <p className="error">{errors.email}</p>}
-
-        <label htmlFor="knowledgeLevel">IT Knowledge Level:</label>
+      {errors.name && <span className="error-message">{errors.name}</span>}
+      <label>
+        Name:
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+      </label>
+      {errors.surname && <span className="error-message">{errors.surname}</span>}
+      <label>
+        Surname:
+        <input type="text" name="surname" value={formData.surname} onChange={handleChange} />
+      </label>
+      {errors.age && <span className="error-message">{errors.age}</span>}
+      <label>
+        Age:
+        <input type="number" name="age" value={formData.age} onChange={handleChange} />
+      </label>
+      {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
+      <label>
+        Phone Number:
+        <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+      </label>
+      {errors.email && <span className="error-message">{errors.email}</span>}
+      <label>
+        Email:
+        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+      </label>
+      <label>
+        Knowledge Level:
         <input
           type="range"
-          id="knowledgeLevel"
           name="knowledgeLevel"
-          value={formData.knowledgeLevel}
-          onChange={handleChange}
           min="1"
           max="10"
-          required
+          value={formData.knowledgeLevel}
+          onChange={handleChange}
         />
         <span>{formData.knowledgeLevel}</span>
-      </fieldset>
-
-      <fieldset>
-        <legend>Group Number:</legend>
+      </label>
+      {errors.groupNumber && <span className="error-message">{errors.groupNumber}</span>}
+      <label>
+        Group Number:
         <label>
           <input
             type="radio"
@@ -155,7 +116,6 @@ const StudentForm = ({ addStudent }) => {
             value="FEU 1 grupė"
             checked={formData.groupNumber === "FEU 1 grupė"}
             onChange={handleChange}
-            required
           />
           FEU 1 grupė
         </label>
@@ -166,7 +126,6 @@ const StudentForm = ({ addStudent }) => {
             value="FEU 2 grupė"
             checked={formData.groupNumber === "FEU 2 grupė"}
             onChange={handleChange}
-            required
           />
           FEU 2 grupė
         </label>
@@ -177,26 +136,15 @@ const StudentForm = ({ addStudent }) => {
             value="FEU 3 grupė"
             checked={formData.groupNumber === "FEU 3 grupė"}
             onChange={handleChange}
-            required
           />
           FEU 3 grupė
         </label>
-        <label>
-          <input
-            type="radio"
-            name="groupNumber"
-            value="FEU 4 grupė"
-            checked={formData.groupNumber === "FEU 4 grupė"}
-            onChange={handleChange}
-            required
-          />
-          FEU 4 grupė
-        </label>
-        {errors.groupNumber && <p className="error">{errors.groupNumber}</p>}
-      </fieldset>
-
-      <fieldset id="programming-languages">
-        <legend>Programming Languages:</legend>
+      </label>
+      {errors.programmingLanguages && (
+        <span className="error-message">{errors.programmingLanguages}</span>
+      )}
+      <label>
+        Programming Languages:
         <label>
           <input
             type="checkbox"
@@ -211,34 +159,23 @@ const StudentForm = ({ addStudent }) => {
           <input
             type="checkbox"
             name="programmingLanguages"
-            value="HTML"
-            checked={formData.programmingLanguages.includes("HTML")}
+            value="Python"
+            checked={formData.programmingLanguages.includes("Python")}
             onChange={handleChange}
           />
-          HTML
+          Python
         </label>
         <label>
           <input
             type="checkbox"
             name="programmingLanguages"
-            value="CSS"
-            checked={formData.programmingLanguages.includes("CSS")}
+            value="Java"
+            checked={formData.programmingLanguages.includes("Java")}
             onChange={handleChange}
           />
-          CSS
+          Java
         </label>
-        <label>
-          <input
-            type="checkbox"
-            name="programmingLanguages"
-            value="React"
-            checked={formData.programmingLanguages.includes("React")}
-            onChange={handleChange}
-          />
-          React
-        </label>
-        {errors.programmingLanguages && <p className="error">{errors.programmingLanguages}</p>}
-      </fieldset>
+      </label>
       <button type="submit">Submit</button>
     </form>
   );
